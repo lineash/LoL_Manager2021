@@ -37,12 +37,6 @@ ScenePtr yourTeam, getGold, makeTeam1, makeTeam2, makeTeam3, finTeam;
 ScenePtr scene_startPhase;
 ScenePtr scene_round[15];
 
-//장면준비
-ScenePtr win = Scene::create("win", "win.png");
-ObjectPtr win_button_next = Object::create("button_next.png", win, 565, 50);
-ScenePtr lose = Scene::create("lose", "lose.png");
-ObjectPtr lose_button_end = Object::create("button_end.png", lose, 565, 50);
-
 TimerPtr goldTimer;
 
 bool top_can = true;
@@ -617,28 +611,35 @@ bool playRound(class Team user, class Team enemy)
     }
 }
 
-void gamePhase()
+void gamePhase(int round)
 {
-    for(int i=0; i <16; i++)
-    {
-        if(Team[userTeam].teamName != Team[i].teamName)
+        //enemyRound
+        if(Team[userTeam].teamName != Team[round].teamName)
         {
             char buf[20];
             sprintf(buf, "round%d.png", nowRound+1);
-            scene_round[i] = Scene::create(buf, buf);
-            scene_round[i]->enter();
-            Team[userTeam].showTeam(scene_round[i], 225, -50);
-            Team[i].showTeam(scene_round[i], 850, -50);
-            auto button_next = Object::create("button_next.png", scene_round[i], 565, 100);
+            scene_round[round] = Scene::create(buf, buf);
+            scene_round[round]->enter();
+            Team[userTeam].showTeam(scene_round[round], 225, -50);
+            Team[round].showTeam(scene_round[round], 850, -50);
+            auto button_next = Object::create("button_next.png", scene_round[round], 565, 100);
             button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
-                if(playRound(Team[userTeam], Team[i]))
+                if(playRound(Team[userTeam], Team[round]))
                 {
+                    ScenePtr win = Scene::create("win", "win.png");
+                    ObjectPtr win_button_next = Object::create("button_next.png", win, 565, 50);
                     win->enter();
                     win_button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
                         nowRound++;
+                        round++;
+                        gamePhase(round);
                         return true;
                     });
-                }else{
+                }
+                else
+                {
+                    ScenePtr lose = Scene::create("lose", "lose.png");
+                    ObjectPtr lose_button_end = Object::create("button_end.png", lose, 565, 50);
                     lose->enter();
                     lose_button_end->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
                         endGame();
@@ -647,11 +648,10 @@ void gamePhase()
                 }
                 return true;
             });
-        }else if(Team[userTeam].teamName == Team[i].teamName)
+        }else if(Team[userTeam].teamName == Team[round].teamName)
         {
-            
+            gamePhase(round+1);
         }
-    }
 }
 int main(int argc, const char * argv[]) {
     
@@ -815,7 +815,7 @@ int main(int argc, const char * argv[]) {
                 scene_startPhase->enter();
                 auto button_phase1 = Object::create("button_next.png", scene_startPhase, 740, 100);
                 button_phase1->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)-> bool {
-                    gamePhase();
+                    gamePhase(0);
                     return true;
                 });
                 return true;

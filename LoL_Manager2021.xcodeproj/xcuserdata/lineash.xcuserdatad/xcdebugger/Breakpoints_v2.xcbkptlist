@@ -30,8 +30,8 @@
             filePath = "LoL_Manager2021/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "404"
-            endingLineNumber = "404"
+            startingLineNumber = "398"
+            endingLineNumber = "398"
             landmarkName = "selectTeam_mouseCallback(object, x, y, action)"
             landmarkType = "9">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "LoL_Manager2021/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "415"
-            endingLineNumber = "415"
+            startingLineNumber = "409"
+            endingLineNumber = "409"
             landmarkName = "selectTeam_mouseCallback(object, x, y, action)"
             landmarkType = "9">
          </BreakpointContent>
