@@ -273,6 +273,10 @@
 		D9E12D91271C14C6009D0A86 /* round13.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9E12D75271C14B7009D0A86 /* round13.png */; };
 		D9E12D92271C14C6009D0A86 /* round14.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9E12D6B271C14B7009D0A86 /* round14.png */; };
 		D9E12D93271C14C6009D0A86 /* round15.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9E12D67271C14B7009D0A86 /* round15.png */; };
+		D9E12D96271C1F75009D0A86 /* win.png in Sources */ = {isa = PBXBuildFile; fileRef = D9E12D94271C1F75009D0A86 /* win.png */; };
+		D9E12D97271C1F75009D0A86 /* lose.png in Sources */ = {isa = PBXBuildFile; fileRef = D9E12D95271C1F75009D0A86 /* lose.png */; };
+		D9E12D98271C1F7B009D0A86 /* lose.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9E12D95271C1F75009D0A86 /* lose.png */; };
+		D9E12D99271C1F7B009D0A86 /* win.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9E12D94271C1F75009D0A86 /* win.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -282,6 +286,8 @@
 			dstPath = usr/share/man/man1;
 			dstSubfolderSpec = 7;
 			files = (
+				D9E12D98271C1F7B009D0A86 /* lose.png in CopyFiles */,
+				D9E12D99271C1F7B009D0A86 /* win.png in CopyFiles */,
 				D9E12D85271C14C6009D0A86 /* round1.png in CopyFiles */,
 				D9E12D86271C14C6009D0A86 /* round2.png in CopyFiles */,
 				D9E12D87271C14C6009D0A86 /* round3.png in CopyFiles */,
@@ -566,6 +572,8 @@
 		D9E12D73271C14B7009D0A86 /* round10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round10.png; sourceTree = "<group>"; };
 		D9E12D74271C14B7009D0A86 /* round3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round3.png; sourceTree = "<group>"; };
 		D9E12D75271C14B7009D0A86 /* round13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round13.png; sourceTree = "<group>"; };
+		D9E12D94271C1F75009D0A86 /* win.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = win.png; sourceTree = "<group>"; };
+		D9E12D95271C1F75009D0A86 /* lose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lose.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -583,6 +591,8 @@
 		D9E12BA9271A7D75009D0A86 = {
 			isa = PBXGroup;
 			children = (
+				D9E12D95271C1F75009D0A86 /* lose.png */,
+				D9E12D94271C1F75009D0A86 /* win.png */,
 				D9E12D72271C14B7009D0A86 /* round1.png */,
 				D9E12D6A271C14B7009D0A86 /* round2.png */,
 				D9E12D74271C14B7009D0A86 /* round3.png */,
@@ -803,6 +813,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9E12D96271C1F75009D0A86 /* win.png in Sources */,
+				D9E12D97271C1F75009D0A86 /* lose.png in Sources */,
 				D9E12D76271C14B7009D0A86 /* round15.png in Sources */,
 				D9E12D77271C14B7009D0A86 /* round6.png in Sources */,
 				D9E12D78271C14B7009D0A86 /* round8.png in Sources */,

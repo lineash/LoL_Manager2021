@@ -169,13 +169,13 @@ public:
         auto show_ad = Object::create(ad.name + ".png", scene, x, y + 200);
         auto show_sup = Object::create(sup.name + ".png", scene, x, y + 100);
     }
-    int score()
+    float score()
     {
-        int score_top= (top.atk * ((top.dex*top.exp)/topG(gen)))*1.5 + ((top.def)* ((top.dex*top.exp)/topG(gen)))*1.5;
-        int score_jg= (jg.atk * ((jg.dex*jg.exp)/jgG(gen)))*1.8 + ((jg.def)* ((jg.dex*jg.exp)/jgG(gen)))*1.0;
-        int score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
-        int score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
-        int score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
+        float score_top= (top.atk * ((top.dex*top.exp)/topG(gen)))*1.5 + ((top.def)* ((top.dex*top.exp)/topG(gen)))*1.5;
+        float score_jg= (jg.atk * ((jg.dex*jg.exp)/jgG(gen)))*1.8 + ((jg.def)* ((jg.dex*jg.exp)/jgG(gen)))*1.0;
+        float score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
+        float score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
+        float score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
         
         return score_top + score_jg + score_mid + score_ad + score_sup;
     }
@@ -604,15 +604,53 @@ bool sup_selectPlayer_mouseCallback(ObjectPtr object, int x, int y, MouseAction 
     
     return true;
 }
-void playRound(class Team user, class Team enemy)
+
+bool playRound(class Team user, class Team enemy)
 {
     if(user.score()>=enemy.score())
     {
-        win->enter();
+        return true;
     }
     else
     {
-        lose->enter();
+        return false;
+    }
+}
+
+void gamePhase()
+{
+    for(int i=0; i <16; i++)
+    {
+        if(Team[userTeam].teamName != Team[i].teamName)
+        {
+            char buf[20];
+            sprintf(buf, "round%d.png", nowRound+1);
+            scene_round[i] = Scene::create(buf, buf);
+            scene_round[i]->enter();
+            Team[userTeam].showTeam(scene_round[i], 225, -50);
+            Team[i].showTeam(scene_round[i], 850, -50);
+            auto button_next = Object::create("button_next.png", scene_round[i], 565, 100);
+            button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
+                if(playRound(Team[userTeam], Team[i]))
+                {
+                    win->enter();
+                    win_button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
+                        nowRound++;
+                        return true;
+                    });
+                }else{
+                    lose->enter();
+                    lose_button_end->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
+                        endGame();
+                        return true;
+                    });
+                }
+                return true;
+            });
+        }else if(Team[userTeam].teamName == Team[i].teamName)
+        {
+            
+        }
     }
 }
 int main(int argc, const char * argv[]) {
@@ -777,12 +815,7 @@ int main(int argc, const char * argv[]) {
                 scene_startPhase->enter();
                 auto button_phase1 = Object::create("button_next.png", scene_startPhase, 740, 100);
                 button_phase1->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)-> bool {
-                    scene_round[0]=Scene::create("round1", "round1.png");
-                    scene_round[0]->enter();
-                    showMessage("첫번째 라운드");
-                    Team[userTeam].showTeam(scene_round[0], 230, -50);
-                    Team[0].showTeam(scene_round[0], 850, -50);
-                    playRound(Team[userTeam], Team[nowRound]);//nowRound == userTeam 있음.
+                    gamePhase();
                     return true;
                 });
                 return true;
