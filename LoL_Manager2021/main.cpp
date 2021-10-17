@@ -49,6 +49,7 @@ bool sup_can = true;
 ObjectPtr select_[16];
 ObjectPtr showUserTeam;
 ObjectPtr top[16], jg[16], mid[16], ad[16], sup[16]; // 0~15
+ObjectPtr button_next[16];
 
 string getName;
 string playerTeam;
@@ -64,6 +65,11 @@ auto scene_jg = Scene::create("scene_jg", "scene_jg.png");
 auto scene_mid = Scene::create("scene_mid", "scene_mid.png");
 auto scene_ad = Scene::create("scene_ad", "scene_ad.png");
 auto scene_sup = Scene::create("scene_sup", "scene_sup.png");
+
+ScenePtr win = Scene::create("win", "win.png");
+ObjectPtr win_button_next = Object::create("button_next.png", win, 565, 50);
+ScenePtr lose = Scene::create("lose", "lose.png");
+ObjectPtr lose_button_end = Object::create("button_end.png", lose, 565, 50);
 
 
 
@@ -599,60 +605,57 @@ bool sup_selectPlayer_mouseCallback(ObjectPtr object, int x, int y, MouseAction 
     return true;
 }
 
-bool playRound(class Team user, class Team enemy)
+void playRound(int i, class Team user, class Team enemy)
 {
     if(user.score()>=enemy.score())
     {
-        return true;
+        win->enter();
+        win_button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
+            scene_round[i+1]->enter();
+            return true;
+        });
     }
     else
     {
-        return false;
+        lose->enter();
+        lose_button_end->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
+            endGame();
+            return true;
+        });
     }
 }
 
-void gamePhase(int round)
+void makeRound()
 {
-        //enemyRound
-        if(Team[userTeam].teamName != Team[round].teamName)
+    int realRound = 1;
+    for(int i = 0; i <16; i++)
+    {
+        if(userTeam != i)
         {
             char buf[20];
-            sprintf(buf, "round%d.png", nowRound+1);
-            scene_round[round] = Scene::create(buf, buf);
-            scene_round[round]->enter();
-            Team[userTeam].showTeam(scene_round[round], 225, -50);
-            Team[round].showTeam(scene_round[round], 850, -50);
-            auto button_next = Object::create("button_next.png", scene_round[round], 565, 100);
-            button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
-                if(playRound(Team[userTeam], Team[round]))
-                {
-                    ScenePtr win = Scene::create("win", "win.png");
-                    ObjectPtr win_button_next = Object::create("button_next.png", win, 565, 50);
-                    win->enter();
-                    win_button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
-                        nowRound++;
-                        round++;
-                        gamePhase(round);
-                        return true;
-                    });
-                }
-                else
-                {
-                    ScenePtr lose = Scene::create("lose", "lose.png");
-                    ObjectPtr lose_button_end = Object::create("button_end.png", lose, 565, 50);
-                    lose->enter();
-                    lose_button_end->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
-                        endGame();
-                        return true;
-                    });
-                }
+            sprintf(buf, "round%d.png", realRound++);
+            scene_round[i] = Scene::create(buf, buf);
+            Team[userTeam].showTeam(scene_round[i], 225, -50);
+            Team[i].showTeam(scene_round[i], 850, -50);
+            
+            button_next[i] = Object::create("button_next.png", scene_round[i], 565, 100);
+            button_next[i]->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
+                playRound(i, Team[userTeam], Team[i]);
                 return true;
             });
-        }else if(Team[userTeam].teamName == Team[round].teamName)
-        {
-            gamePhase(round+1);
         }
+    }
+
 }
+
+
+void gamePhase(int round)
+{
+    makeRound();
+    scene_round[0]->enter();
+}
+
+
 int main(int argc, const char * argv[]) {
     
     //게임옵션설정
