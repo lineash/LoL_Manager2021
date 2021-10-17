@@ -19,6 +19,7 @@ using namespace std;
 int playerGold = 0;
 int userTeam = 0;
 int nowRound = 0;
+int rRound = 0;
 
 //랜덤
 random_device rd;
@@ -154,7 +155,11 @@ public:
     Player sup = sample_sup;
     Team()
     {
-        
+        Player top = sample_top;
+        Player jg = sample_jg;
+        Player mid = sample_mid;
+        Player ad = sample_ad;
+        Player sup = sample_sup;
     }
     Team(string teamname):teamName(teamname)
     {
@@ -168,7 +173,7 @@ public:
         int score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
         int score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
         int score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
-            
+        
         return score_top + score_jg + score_mid + score_ad + score_sup;
     }
 };
@@ -619,13 +624,11 @@ bool sup_selectPlayer_mouseCallback(ObjectPtr object, int x, int y, MouseAction 
 
 void playRound(int i)
 {
+    rRound = i;
     if(Team[userTeam].score() >= Team[i].score())
     {
         win->enter();
-        win_button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
-            scene_round[i+1]->enter();
-            return true;
-        });
+        rRound+=1;
     }
     else
     {
@@ -656,7 +659,7 @@ void makeRound()
             
             button_next[i] = Object::create("button_next.png", scene_round[i], 565, 100);
             button_next[i]->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
-                playRound(i);
+                playRound(rRound);
                 return true;
             });
         }
@@ -842,6 +845,10 @@ int main(int argc, const char * argv[]) {
         return true;
     });
 
+    win_button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
+        scene_round[rRound]->enter();
+        return true;
+    });
     
         
     
