@@ -26,11 +26,11 @@ random_device rd;
 mt19937 gen(rd());
 uniform_int_distribution<int> dis(13, 28);
 uniform_int_distribution<int> pla(0, 15);
-uniform_int_distribution<float> topG(0.2f, 3.0f);
-uniform_int_distribution<float> jgG(0.7f, 2.5f);
-uniform_int_distribution<float> midG(0.8f, 3.5f);
-uniform_int_distribution<float> adG(0.6f, 5.0f);
-uniform_int_distribution<float> supG(0.4f, 2.0f);
+uniform_real_distribution<float> topG(0.2f, 3.0f);
+uniform_real_distribution<float> jgG(0.7f, 2.5f);
+uniform_real_distribution<float> midG(0.8f, 3.5f);
+uniform_real_distribution<float> adG(0.6f, 5.0f);
+uniform_real_distribution<float> supG(0.4f, 2.0f);
 
 
 //글로벌 변수 선언
@@ -166,13 +166,13 @@ public:
         
     }
     void showTeam(ScenePtr scene, int x, int y);
-    int score()
+    float score()
     {
-        int score_top= (top.atk * ((top.dex*top.exp)/topG(gen)))*1.5 + ((top.def)* ((top.dex*top.exp)/topG(gen)))*1.5;
-        int score_jg= (jg.atk * ((jg.dex*jg.exp)/jgG(gen)))*1.8 + ((jg.def)* ((jg.dex*jg.exp)/jgG(gen)))*1.0;
-        int score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
-        int score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
-        int score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
+        float score_top= (top.atk * ((top.dex*top.exp)/topG(gen)))*1.5 + ((top.def)* ((top.dex*top.exp)/topG(gen)))*1.5;
+        float score_jg= (jg.atk * ((jg.dex*jg.exp)/jgG(gen)))*1.8 + ((jg.def)* ((jg.dex*jg.exp)/jgG(gen)))*1.0;
+        float score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
+        float score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
+        float score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
         
         return score_top + score_jg + score_mid + score_ad + score_sup;
     }
