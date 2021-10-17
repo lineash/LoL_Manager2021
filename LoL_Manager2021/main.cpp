@@ -88,7 +88,7 @@ public:
     }
     Player(string name, int position):name(name), position(position)
     {
-        
+        atk=0, def=0, dex=0, exp=0, gold=0, position=0;
     }
     Player(string name, int atk, int def, int dex, int exp, int gold, int position)
     :name(name), atk(atk), def(def), dex(dex), exp(exp), gold(gold), position(position)
@@ -136,7 +136,7 @@ public:
 
 
 //팀 클래스 멤버 초기화를 위한 샘플
-Player sample_top("example", 1);
+Player sample_top("example",1);
 Player sample_jg("example", 2);
 Player sample_mid("example",3);
 Player sample_ad("example", 4);
@@ -161,13 +161,13 @@ public:
         
     }
     void showTeam(ScenePtr scene, int x, int y);
-    float score()
+    int score()
     {
-        float score_top= (top.atk * ((top.dex*top.exp)/topG(gen)))*1.5 + ((top.def)* ((top.dex*top.exp)/topG(gen)))*1.5;
-        float score_jg= (jg.atk * ((jg.dex*jg.exp)/jgG(gen)))*1.8 + ((jg.def)* ((jg.dex*jg.exp)/jgG(gen)))*1.0;
-        float score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
-        float score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
-        float score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
+        int score_top= (top.atk * ((top.dex*top.exp)/topG(gen)))*1.5 + ((top.def)* ((top.dex*top.exp)/topG(gen)))*1.5;
+        int score_jg= (jg.atk * ((jg.dex*jg.exp)/jgG(gen)))*1.8 + ((jg.def)* ((jg.dex*jg.exp)/jgG(gen)))*1.0;
+        int score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
+        int score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
+        int score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
             
         return score_top + score_jg + score_mid + score_ad + score_sup;
     }
