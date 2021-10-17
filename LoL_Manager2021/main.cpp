@@ -198,7 +198,7 @@ float Team::score()
     return score_top + score_jg + score_mid + score_ad + score_sup;
 }*/
 
-Team Team[16]; //총 16팀이 참여한다. Team은 0~16
+class Team Team[16]; //총 16팀이 참여한다. Team은 0~16
 
 //==============================================================
 //==================================================== 플레이어 DB
