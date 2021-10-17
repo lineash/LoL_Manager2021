@@ -86,7 +86,7 @@ public:
     {
         
     }
-    Player(string name, int position)
+    Player(string name, int position):name(name), position(position)
     {
         
     }
@@ -136,11 +136,11 @@ public:
 
 
 //팀 클래스 멤버 초기화를 위한 샘플
-Player sample_top("", 1);
-Player sample_jg("", 2);
-Player sample_mid("",3);
-Player sample_ad("", 4);
-Player sample_sup("", 5);
+Player sample_top("example", 1);
+Player sample_jg("example", 2);
+Player sample_mid("example",3);
+Player sample_ad("example", 4);
+Player sample_sup("example", 5);
 
 //팀 클래스
 class Team
@@ -637,6 +637,10 @@ void makeRound()
             scene_round[i] = Scene::create(buf, buf);
             Team[userTeam].showTeam(scene_round[i], 225, -50);
             Team[i].showTeam(scene_round[i], 850, -50);
+            if(i==0)
+            {
+                scene_round[i]->enter();
+            }
             
             button_next[i] = Object::create("button_next.png", scene_round[i], 565, 100);
             button_next[i]->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
@@ -652,7 +656,6 @@ void makeRound()
 void gamePhase(int round)
 {
     makeRound();
-    scene_round[0]->enter();
 }
 
 
