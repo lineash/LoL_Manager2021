@@ -80,7 +80,7 @@ class Player
 public:
     string name;
     ObjectPtr player;
-    int atk, def, dex, exp, gold, position;
+    int atk=0, def=0, dex=0, exp=0, gold=0, position=0;
     int num = 0; //position 1=top 2=jg 3=mid 4=ad 5=sup
     Player()
     {
@@ -160,7 +160,19 @@ public:
     {
         
     }
-    void showTeam(ScenePtr scene, int x, int y)
+    void showTeam(ScenePtr scene, int x, int y);
+    float score()
+    {
+        float score_top= (top.atk * ((top.dex*top.exp)/topG(gen)))*1.5 + ((top.def)* ((top.dex*top.exp)/topG(gen)))*1.5;
+        float score_jg= (jg.atk * ((jg.dex*jg.exp)/jgG(gen)))*1.8 + ((jg.def)* ((jg.dex*jg.exp)/jgG(gen)))*1.0;
+        float score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
+        float score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
+        float score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
+            
+        return score_top + score_jg + score_mid + score_ad + score_sup;
+    }
+};
+void Team::showTeam(ScenePtr scene, int x, int y)
     {
         auto show_logo = Object::create(teamName, scene, x-50, y + 600);
         auto show_top = Object::create(top.name + ".png", scene, x, y + 500);
@@ -169,19 +181,19 @@ public:
         auto show_ad = Object::create(ad.name + ".png", scene, x, y + 200);
         auto show_sup = Object::create(sup.name + ".png", scene, x, y + 100);
     }
-    float score()
-    {
-        float score_top= (top.atk * ((top.dex*top.exp)/topG(gen)))*1.5 + ((top.def)* ((top.dex*top.exp)/topG(gen)))*1.5;
-        float score_jg= (jg.atk * ((jg.dex*jg.exp)/jgG(gen)))*1.8 + ((jg.def)* ((jg.dex*jg.exp)/jgG(gen)))*1.0;
-        float score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
-        float score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
-        float score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
+/*
+float Team::score()
+{
+    float score_top= (top.atk * ((top.dex*top.exp)/topG(gen)))*1.5 + ((top.def)* ((top.dex*top.exp)/topG(gen)))*1.5;
+    float score_jg= (jg.atk * ((jg.dex*jg.exp)/jgG(gen)))*1.8 + ((jg.def)* ((jg.dex*jg.exp)/jgG(gen)))*1.0;
+    float score_mid= (mid.atk * ((mid.dex*mid.exp)/midG(gen)))*2.2 + ((mid.def)* ((mid.dex*mid.exp)/midG(gen)))*1.3;
+    float score_ad= (ad.atk * ((ad.dex*ad.exp)/adG(gen)))*1.7 + ((ad.def)* ((ad.dex*ad.exp)/adG(gen)))*1.5;
+    float score_sup= (sup.atk * ((sup.dex*sup.exp)/supG(gen)))*1.4 + ((sup.def)* ((sup.dex*sup.exp)/supG(gen)))*1.2;
         
-        return score_top + score_jg + score_mid + score_ad + score_sup;
-    }
-};
+    return score_top + score_jg + score_mid + score_ad + score_sup;
+}*/
 
-Team Team[17]; //총 16팀이 참여한다. Team은 0~16
+Team Team[16]; //총 16팀이 참여한다. Team은 0~16
 
 //==============================================================
 //==================================================== 플레이어 DB
@@ -605,9 +617,9 @@ bool sup_selectPlayer_mouseCallback(ObjectPtr object, int x, int y, MouseAction 
     return true;
 }
 
-void playRound(int i, class Team user, class Team enemy)
+void playRound(int i)
 {
-    if(user.score()>=enemy.score())
+    if(Team[userTeam].score() >= Team[i].score())
     {
         win->enter();
         win_button_next->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
@@ -630,7 +642,7 @@ void makeRound()
     int realRound = 1;
     for(int i = 0; i <16; i++)
     {
-        if(userTeam != i)
+        if(userTeam != i || true)
         {
             char buf[20];
             sprintf(buf, "round%d.png", realRound++);
@@ -644,7 +656,7 @@ void makeRound()
             
             button_next[i] = Object::create("button_next.png", scene_round[i], 565, 100);
             button_next[i]->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool{
-                playRound(i, Team[userTeam], Team[i]);
+                playRound(i);
                 return true;
             });
         }
